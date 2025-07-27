@@ -1,19 +1,18 @@
 import express from "express";
 import cors from "cors";
+import fs from "fs";
+import { initializeApp, cert } from "firebase-admin/app";
 import clientesRoutes from "./routes/clientes.js";
 import adminRoutes from "./routes/admin.js";
 import comprovantesRoutes from "./routes/comprovantes.js";
 import usuariosRoutes from "./routes/usuarios.js";
-import { initializeApp, cert } from "firebase-admin/app";
 import * as dotenv from "dotenv";
-import serviceAccount from "./firebase-service-account.json" assert { type: "json" };
-import fs from "fs";
 
 dotenv.config();
 
-if (!fs.existsSync("./uploads")) {
-  fs.mkdirSync("./uploads");
-}
+const serviceAccount = JSON.parse(
+  fs.readFileSync("./firebase-service-account.json", "utf-8")
+);
 
 initializeApp({
   credential: cert(serviceAccount)
